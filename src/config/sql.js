@@ -2,11 +2,11 @@ import pgk from "pg"
 const { Pool } = pgk
 
 const pool = new Pool({
-    host: "dpg-cjr2ulthe99c738qpl7g-a",
-    port: 5432,
-    database: "todoapp_b1my",
-    user: "todoapp_b1my_user",
-    password : "fmIO5Ad3S6mv7rvBUGlu689qUK3mTBh4"
+    host: process.env.POSTGRE_HOST,
+    port: process.env.POSTGRE_PORT,
+    database: process.env.POSTGRE_DATABASE,
+    user: process.env.POSTGRE_USER,
+    password: process.env.POSTGRE_PASSWORD
 })
 
 export const createTable = async () => {
