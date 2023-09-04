@@ -1,5 +1,5 @@
-import express from 'express'
-import { createTable } from './config/sql.js'
+import express, { response } from 'express'
+import pool, { createTable } from './config/sql.js'
 
 const app = express()
 
@@ -12,8 +12,16 @@ async function init(){
  }
 
  function serverStart(){
-    app.get("/", (req,res) => {
-        return res.status(200).json({message: "works!!!"})
+    app.get("/api/tasks", async(req,res) => {
+        try {
+            const resultQuery = await pool.query("SELECT * FROM todoapp")
+            const rows = resultQuery.rows
+            return res.status(200).json(rows)
+        } catch (error) {
+            return res.status(401).json(error)
+        }
+
+        
     })
     app.listen(3000)
  } 
