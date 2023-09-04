@@ -37,6 +37,18 @@ async function init(){
             return res.status(401).json(error)
         }
     })
+
+    app.delete("/api/tasks/:id", async(req,res) => {
+        const id = +req.params.id
+
+        try {
+        const resultQuery = await pool.query("DELETE FROM todoapp WHERE id = $1", [id])
+        return res.status(201).json({message: "task deleted!"})
+        } catch (error) {
+            return res.status(401).json(error)
+        }
+    })
+
     app.listen(3000) 
  } 
 
