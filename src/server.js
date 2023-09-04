@@ -1,9 +1,11 @@
 import express, { response } from 'express'
 import pool, { createTable } from './config/sql.js'
+import bodyParser from 'body-parser'
 
 const app = express()
 
 async function init(){
+
  try {
     await createTable()
     serverStart()
@@ -12,6 +14,7 @@ async function init(){
  }
 
  function serverStart(){
+    app.use(bodyParser.json())
     app.get("/api/tasks", async(req,res) => {
         try {
             const resultQuery = await pool.query("SELECT * FROM todoapp")
@@ -23,7 +26,18 @@ async function init(){
 
         
     })
-    app.listen(3000)
+
+    app.post("/api/tasks", async(req,res) => {
+        try {
+            const { task, active} = req.body
+            const resultQuery = await pool.query("INSERT INTO todoapp(task, active) VALUES($1, $2)", [task, active])
+            const row = resultQuery.row[0]
+            return res.status(200).json(row)
+        } catch (error) {
+            return res.status(401).json(error)
+        }
+    })
+    app.listen(3000) 
  } 
 
 }
