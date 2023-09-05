@@ -67,7 +67,7 @@ async function init(){
 
       app.delete("/api/tasks/clear-completed", async (req, res) => {
         try {
-          const resultQuery = await pool.query("DELETE FROM todoapp WHERE active = false");
+          const resultQuery = await pool.query("DELETE FROM todoapp WHERE active = 'false' ");
           return res.status(200).json({ message: "Completed tasks cleared!" });
         } catch (error) {
           return res.status(400).json(error);
