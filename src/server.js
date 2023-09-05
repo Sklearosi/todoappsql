@@ -42,15 +42,9 @@ async function init(){
 
     app.delete("/api/tasks/:id", async(req,res) => {
         const id = +req.params.id
-        const { deleteCompleted } = req.body;
         try {
-            if (deleteCompleted) {
-                const resultQuery = await pool.query("DELETE FROM todoapp WHERE active = false");
-                return res.status(200).json({ message: "Completed tasks cleared!" });
-              } else {
-                const resultQuery = await pool.query("DELETE FROM todoapp WHERE id = $1", [id]);
-                return res.status(201).json({ message: "Task deleted!" });
-              }
+          const resultQuery = await pool.query("DELETE FROM todoapp WHERE id = $1", [id])
+          return res.status(201).json({message: "task deleted!"})
         } catch (error) {
             return res.status(401).json(error)
         }
@@ -66,6 +60,15 @@ async function init(){
             [active, id]
           );
           return res.status(200).json({ message: "Task updated!" });
+        } catch (error) {
+          return res.status(400).json(error);
+        }
+      });
+
+      app.delete("/api/tasks/clear-completed", async (req, res) => {
+        try {
+          const resultQuery = await pool.query("DELETE FROM todoapp WHERE active = false");
+          return res.status(200).json({ message: "Completed tasks cleared!" });
         } catch (error) {
           return res.status(400).json(error);
         }
