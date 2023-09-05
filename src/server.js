@@ -16,6 +16,7 @@ async function init(){
 
  function serverStart(){
     app.use(bodyParser.json())
+    app.use(cors())
     app.get("/api/tasks", async(req,res) => {
         try {
             const resultQuery = await pool.query("SELECT * FROM todoapp")
