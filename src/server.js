@@ -51,6 +51,21 @@ async function init(){
         }
     })
 
+    app.put("/api/tasks/:id", async (req, res) => {
+        const id = +req.params.id;
+        const { active } = req.body;
+      
+        try {
+          const resultQuery = await pool.query(
+            "UPDATE todoapp SET active = $1 WHERE id = $2",
+            [active, id]
+          );
+          return res.status(200).json({ message: "Task updated!" });
+        } catch (error) {
+          return res.status(400).json(error);
+        }
+      });
+
     app.listen(3000) 
  } 
 
