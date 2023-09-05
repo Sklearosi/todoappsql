@@ -1,6 +1,7 @@
 import express, { response } from 'express'
 import pool, { createTable } from './config/sql.js'
 import bodyParser from 'body-parser'
+import cors from "cors"
 
 const app = express()
 
